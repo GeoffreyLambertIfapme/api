@@ -5,31 +5,60 @@
     </head>
     <body>
         <h1>
-            Liste des postes
+            Liste des commentaires
         </h1>
         <p>
-            Recupérer la liste des postes situé a cette address "GET" https://jsonplaceholder.typicode.com/posts et afficher le contenu
+            Recupérer la liste des commentaires situé a cette address "GET" https://jsonplaceholder.typicode.com/comments et afficher le contenu
         </p>
 
         <main class="container text-bg-light">
-            
+            <button id="fetch">fetch</button>
+            <div id="comments">
+
+            </div>
         </main>
 
         <script>
-           const request = new XMLHttpRequest();
 
-           request.onload = () => {
-                console.log(request);
+            const fetch = document.getElementById("fetch");
+
+
+            fetch.addEventListener('click', () => {
+                const request = new XMLHttpRequest();
+                request.onload = () => {
+                    onload(request);
+                }
+                
+                request.open("GET", "https://jsonplaceholder.typicode.com/comments");
+                request.send();
+            });
+
+            function onload(request){
                 if(request.status === 200){
-                    console.log("Reponse: ",JSON.parse(request.response));
+                    displayComment(JSON.parse(request.response));
                 } else {
                     console.log("Error: ", request.status);
                 }
-           }
-           
-           request.open("GET", "https://jsonplaceholder.typicode.com/todos");
-           request.send();
-           
+            }
+
+            const commentsContainer = document.getElementById("comments");
+
+            function displayComment(comments) {
+                console.log(comments);
+                comments.forEach(comment => {
+                    const div = document.createElement('div');
+                    div.innerText = comment.body;
+
+                    const hr =  document.createElement("hr")
+
+                    commentsContainer.appendChild(div);
+                    commentsContainer.appendChild(hr);
+                });
+            }
+
+            
+
+        //    
         </script>
     </body>
 </html>
