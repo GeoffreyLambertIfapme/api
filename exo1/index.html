@@ -16,7 +16,44 @@
         </main>
 
         <script>
+
+            async function getPosts() {
+                let url = new URL("https://jsonplaceholder.typicode.com/posts");
+
+                try {
+                    console.log("1 - avant fetech");
+                    const res = await fetch(url);
+                    console.log("2 - apres fetech");
+                    return await res.json();
+                } catch( error ) {
+                    console.log(error);
+                }
+            }
            
+            async function renderPosts() {
+                console.log("3 - avant posts");
+                let posts = await getPosts();
+                console.log("4 - apres posts");
+
+                // let html = '';
+                const html = 
+                posts
+                .map(post => {
+                    return `
+                    <div class='user'>
+                        <h2>${post.id}</h2>
+                        <h3>${post.userId}</h3>
+                        <p>${post.title}</p>
+                        <p>${post.body}</p>
+                    </div>`;
+                })
+                .join('<hr />');
+
+                const container = document.querySelector("main");
+                container.innerHTML = html;
+            }
+
+            renderPosts();
         </script>
     </body>
 </html>
